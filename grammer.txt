@@ -1,0 +1,102 @@
+total_program   ->   program_head   declare_part   program_body   .
+program_head   ->   program   program_name
+program_name   ->   ID
+declare_part   ->   type_dec_part   var_dec_part   proc_dec_part
+type_dec_part   ->   null
+type_dec_part   ->   type_dec
+type_dec   ->   type   type_dec_list
+type_dec_list   ->   type_id   =   type_name   ;   type_dec_more
+type_dec_more   ->   null
+type_dec_more   ->   type_dec_list
+type_id   ->   ID
+type_name   ->   base_name
+type_name   ->   structure_type
+type_name   ->   ID
+base_name   ->   integer
+base_name   ->   char
+structure_type   ->   array_type
+structure_type   ->   rec_type
+array_type   ->   array   [   NUM   ..   NUM   ]   of   base_name
+rec_type   ->   record   field_dec_list   end
+field_dec_list   ->   base_name   id_list   ;   field_dec_more
+field_dec_list   ->   array_type   id_list   ;   field_dec_more
+field_dec_more   ->   null
+field_dec_more   ->   field_dec_list
+id_list   ->   ID   id_more
+id_more   ->   null
+id_more   ->   ,   id_list
+var_dec_part   ->   null
+var_dec_part   ->   var_dec
+var_dec   ->   var   var_dec_list
+var_dec_list   ->   type_name   var_id_list   ;   var_dec_more
+var_dec_more   ->   null
+var_dec_more   ->   var_dec_list
+var_id_list   ->   ID   var_id_more
+var_id_more   ->   null
+var_id_more   ->   ,   var_id_list
+proc_dec_part   ->   null
+proc_dec_part   ->   proc_dec
+proc_dec   ->   procedure    proc_name   (   param_list   )   ;   declare_part   proc_body   proc_dec_more
+proc_dec_more   ->   null
+proc_dec_more   ->   proc_dec
+proc_name   ->   ID
+param_list   ->   null
+param_list   ->   param_dec_list
+param_dec_list   ->   param   param_more
+param_more   ->   null
+param_more   ->   ;   param_dec_list
+param   ->   type_name   form_list
+param   ->   var   type_name   form_list
+form_list   ->   ID   fid_more
+fid_more   ->   null
+fid_more   ->   ,   form_list
+proc_body   ->   program_body
+program_body   ->   begin   stm_list   end
+stm_list   ->   stm   stm_more
+stm_more   ->   null
+stm_more   ->   ;   stm_list
+stm   ->   conditional_stm
+stm   ->   loop_stm
+stm   ->   input_stm
+stm   ->   output_stm
+stm   ->   return_stm
+stm   ->   ID   ass_call
+ass_call   ->   assignment_rest
+ass_call   ->   call_stm_rest
+assignment_rest   ->   vari_more   :=   exp
+conditional_stm   ->   if   rel_exp   then   stm_list   else   stm_list   fi
+loop_stm   ->   while   rel_exp   do   stm_list   endwh
+input_stm   ->   read   (   in_var   )
+in_var   ->   ID
+output_stm   ->   write   (   exp   )
+return_stm   ->   return   (   exp   )
+call_stm_rest   ->   (   act_param_list   )
+act_param_list   ->   null
+act_param_list   ->   exp   act_param_more
+act_param_more   ->   null
+act_param_more   ->   ,   act_param_list
+rel_exp   ->   exp   other_rel_e
+other_rel_e   ->   cmp_op   exp
+exp   ->   term   other_term
+other_term   ->   null
+other_term   ->   add_op   exp
+term   ->   factor   other_factor
+other_factor   ->   null
+other_factor   ->   mul_op   term
+factor   ->   (   exp   )
+factor   ->   NUM
+factor   ->   variable
+variable   ->   ID   vari_more
+vari_more   ->   null
+vari_more   ->   [   exp   ]
+vari_more   ->   .   field_var
+field_var   ->   ID   field_var_more
+field_var_more   ->   null
+field_var_more   ->   [   exp   ]
+cmp_op   ->   <
+cmp_op   ->   =
+cmp_op   ->   >
+add_op   ->   +
+add_op   ->   -
+mul_op   ->   *
+mul_op   ->   /
